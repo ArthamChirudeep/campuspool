@@ -8,7 +8,7 @@ export const CAMPUS = {
 } as const;
 
 export const DISCLAIMER =
-  "CampusPool @ CVR is an independent student project. It is not officially endorsed by or affiliated with CVR College of Engineering.";
+  "CampusPool @ CVR is an independent student project. It is not officially endorsed by or affiliated with CVR ";
 
 export const DAYS = [
   { value: 1, short: "Mon", label: "Monday" },
