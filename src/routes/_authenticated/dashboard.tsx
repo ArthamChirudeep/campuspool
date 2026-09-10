@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth, useProfile } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { rupees } from "@/lib/campus";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -16,10 +16,10 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       { title: "Dashboard — CampusPool @ CVR" },
       {
         name: "description",
-        content: "Your CVR commute at a glance: upcoming rides, requests and savings.",
+        content: "Your CVR commute at a glance: upcoming lifts, requests and shared impact.",
       },
       { property: "og:title", content: "Dashboard — CampusPool @ CVR" },
-      { property: "og:description", content: "Upcoming rides, requests and savings." },
+      { property: "og:description", content: "Upcoming lifts, requests and shared impact." },
     ],
   }),
   component: Dashboard,
@@ -35,7 +35,7 @@ function Dashboard() {
       const { data } = await supabase
         .from("rides")
         .select(
-          "id, origin_name, dest_name, departure_time, is_recurring, recurrence_days, ride_date, seats_available, seats_total, fare_share, distance_km, driver:profiles!rides_driver_id_fkey(full_name, rating, vehicle_model)",
+          "id, origin_name, dest_name, departure_time, is_recurring, recurrence_days, ride_date, seats_available, seats_total, distance_km, driver:profiles!rides_driver_id_fkey(full_name, rating, vehicle_model)",
         )
         .eq("status", "open")
         .order("departure_time")
@@ -50,15 +50,15 @@ function Dashboard() {
     queryFn: async () => {
       const { data } = await supabase
         .from("impact_events")
-        .select("km_shared, co2_saved_kg, money_saved")
+        .select("km_shared, co2_saved_kg, seats_filled")
         .eq("user_id", user!.id);
       return (data ?? []).reduce(
         (acc, row) => ({
           km: acc.km + Number(row.km_shared),
           co2: acc.co2 + Number(row.co2_saved_kg),
-          money: acc.money + Number(row.money_saved),
+          seats: acc.seats + Number(row.seats_filled ?? 0),
         }),
-        { km: 0, co2: 0, money: 0 },
+        { km: 0, co2: 0, seats: 0 },
       );
     },
   });
@@ -113,8 +113,8 @@ function Dashboard() {
           icon={<Leaf className="size-4" />}
         />
         <StatCard
-          label="Money saved"
-          value={rupees(impact.data?.money ?? 0)}
+          label="Seats shared"
+          value={`${impact.data?.seats ?? 0}`}
           icon={<CarFront className="size-4" />}
         />
       </section>
