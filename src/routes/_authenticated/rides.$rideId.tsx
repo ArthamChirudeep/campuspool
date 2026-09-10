@@ -170,7 +170,19 @@ function RideDetail() {
           </CardContent>
         </Card>
 
-        {isParticipant && <RideChat rideId={rideId} />}
+        {isParticipant ? (
+          <RideChat rideId={rideId} driverId={r.driver_id} />
+        ) : (
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-display text-lg">Ride group chat</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground">
+              The group chat opens for everyone travelling in this lift once the driver accepts your
+              seat request.
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       <aside className="space-y-6">
@@ -313,7 +325,18 @@ type ChatMessage = {
   created_at: string;
 };
 
-function RideChat({ rideId }: { rideId: string }) {
+type RideMember = { id: string; full_name: string; isDriver: boolean };
+
+function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase())
+    .join("");
+}
+
+function RideChat({ rideId, driverId }: { rideId: string; driverId: string }) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [text, setText] = useState("");
