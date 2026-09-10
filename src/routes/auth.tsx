@@ -19,7 +19,7 @@ export const Route = createFileRoute("/auth")({
       {
         name: "description",
         content:
-          "Sign in to CampusPool to share commutes with CVR College students across Hyderabad and cut travel costs and emissions.",
+          "Sign in to CampusPool to share free lifts with CVR College students across Hyderabad and cut emissions.",
       },
       { property: "og:title", content: "Sign in — CampusPool @ CVR" },
       {
