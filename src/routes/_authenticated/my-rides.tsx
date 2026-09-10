@@ -34,7 +34,7 @@ function MyRides() {
       const { data } = await supabase
         .from("rides")
         .select(
-          "id, origin_name, dest_name, departure_time, is_recurring, recurrence_days, ride_date, seats_available, seats_total, fare_share, distance_km",
+          "id, origin_name, dest_name, departure_time, is_recurring, recurrence_days, ride_date, seats_available, seats_total, distance_km",
         )
         .eq("driver_id", user!.id)
         .order("departure_time");
@@ -49,7 +49,7 @@ function MyRides() {
       const { data } = await supabase
         .from("ride_requests")
         .select(
-          "id, status, pickup_name, ride:rides(id, origin_name, dest_name, departure_time, is_recurring, recurrence_days, ride_date, seats_available, seats_total, fare_share, distance_km)",
+          "id, status, pickup_name, ride:rides(id, origin_name, dest_name, departure_time, is_recurring, recurrence_days, ride_date, seats_available, seats_total, distance_km)",
         )
         .eq("rider_id", user!.id)
         .order("created_at", { ascending: false });

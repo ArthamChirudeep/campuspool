@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Toggle } from "@/components/ui/toggle";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { CAMPUS, DAYS, formatDays, formatTime, haversineKm, moneyForKm, rupees } from "@/lib/campus";
+import { CAMPUS, DAYS, formatDays, formatTime } from "@/lib/campus";
 import { getRoute } from "@/lib/directions.functions";
 
 export const Route = createFileRoute("/_authenticated/offer")({
@@ -42,7 +42,7 @@ export const Route = createFileRoute("/_authenticated/offer")({
   component: OfferPage,
 });
 
-const STEPS = ["Route", "Schedule", "Seats & fare"] as const;
+const STEPS = ["Route", "Schedule", "Seats & notes"] as const;
 
 function OfferPage() {
   const { user } = useAuth();
@@ -60,7 +60,7 @@ function OfferPage() {
   const [rideDate, setRideDate] = useState("");
   const [time, setTime] = useState("08:00");
   const [seats, setSeats] = useState("3");
-  const [fare, setFare] = useState("");
+  
   const [notes, setNotes] = useState("");
 
   const area = areas?.find((a) => a.id === areaId);
@@ -75,13 +75,6 @@ function OfferPage() {
       : { origin: campus, destination: home };
   }, [area, direction]);
 
-  const suggestedFare = endpoints
-    ? Math.round(
-        (moneyForKm(haversineKm(endpoints.origin, endpoints.destination) * 1.25) /
-          Math.max(1, Number(seats))) *
-          1.1,
-      )
-    : 0;
 
   const publish = useMutation({
     mutationFn: async () => {
@@ -111,7 +104,7 @@ function OfferPage() {
           ride_date: isRecurring ? null : rideDate || null,
           seats_total: Number(seats),
           seats_available: Number(seats),
-          fare_share: Number(fare || suggestedFare),
+          
           notes: notes || null,
           distance_km: route.distanceKm,
           duration_min: route.durationMin,
@@ -304,20 +297,11 @@ function OfferPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="fare">Fare share per rider</Label>
-                  <Input
-                    id="fare"
-                    type="number"
-                    min={0}
-                    placeholder={String(suggestedFare)}
-                    value={fare}
-                    onChange={(e) => setFare(e.target.value)}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Suggested {rupees(suggestedFare)} — covers fuel only, no profit.
-                  </p>
-                </div>
+                <p className="rounded-lg bg-muted p-3 text-xs text-muted-foreground">
+                  CampusPool lifts are always free — you're simply sharing empty seats with
+                  classmates heading your way.
+                </p>
+
                 <div className="space-y-2">
                   <Label htmlFor="notes">Notes for riders</Label>
                   <Textarea
@@ -377,7 +361,7 @@ function OfferPage() {
                 {formatTime(time)} · {isRecurring ? formatDays(days) : rideDate || "Pick a date"}
               </p>
               <p className="text-muted-foreground">
-                {seats} seats · {rupees(Number(fare || suggestedFare))} per rider
+                {seats} seats · free lift
               </p>
             </CardContent>
           </Card>

@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { title: "Campus settings — CampusPool @ CVR" },
       {
         name: "description",
-        content: "Configure campus location, fuel and emission factors, and demo mode.",
+        content: "Configure campus location, emission factors, and demo mode.",
       },
       { property: "og:title", content: "Campus settings — CampusPool @ CVR" },
       { property: "og:description", content: "Admin configuration for CampusPool." },
@@ -39,8 +39,6 @@ function AdminPage() {
     city: "",
     lat: "",
     lng: "",
-    fuel_price_per_litre: "",
-    km_per_litre: "",
     co2_kg_per_km: "",
     endorsement_note: "",
     demo_mode_enabled: true,
@@ -55,8 +53,6 @@ function AdminPage() {
       city: settings.city,
       lat: String(settings.lat),
       lng: String(settings.lng),
-      fuel_price_per_litre: String(settings.fuel_price_per_litre),
-      km_per_litre: String(settings.km_per_litre),
       co2_kg_per_km: String(settings.co2_kg_per_km),
       endorsement_note: settings.endorsement_note,
       demo_mode_enabled: settings.demo_mode_enabled,
@@ -86,8 +82,6 @@ function AdminPage() {
           city: form.city,
           lat: Number(form.lat),
           lng: Number(form.lng),
-          fuel_price_per_litre: Number(form.fuel_price_per_litre),
-          km_per_litre: Number(form.km_per_litre),
           co2_kg_per_km: Number(form.co2_kg_per_km),
           endorsement_note: form.endorsement_note,
           demo_mode_enabled: form.demo_mode_enabled,
@@ -131,7 +125,7 @@ function AdminPage() {
       <header>
         <h1 className="font-display text-2xl font-bold sm:text-3xl">Campus settings</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Configure the campus, savings factors and demo mode.
+          Configure the campus, emission factors and demo mode.
         </p>
       </header>
 
@@ -168,20 +162,6 @@ function AdminPage() {
           </Field>
           <Field id="lng" label="Longitude">
             <Input id="lng" value={form.lng} onChange={(e) => set("lng", e.target.value)} />
-          </Field>
-          <Field id="fuel" label="Fuel price (₹/litre)">
-            <Input
-              id="fuel"
-              value={form.fuel_price_per_litre}
-              onChange={(e) => set("fuel_price_per_litre", e.target.value)}
-            />
-          </Field>
-          <Field id="kmpl" label="Mileage (km/litre)">
-            <Input
-              id="kmpl"
-              value={form.km_per_litre}
-              onChange={(e) => set("km_per_litre", e.target.value)}
-            />
           </Field>
           <Field id="co2" label="CO₂ (kg per km)">
             <Input

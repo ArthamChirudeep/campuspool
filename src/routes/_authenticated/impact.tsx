@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Bus, Leaf, PiggyBank, Users } from "lucide-react";
+import { Bus, CarFront, Leaf, Users } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -15,7 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { rupees } from "@/lib/campus";
+
 
 export const Route = createFileRoute("/_authenticated/impact")({
   head: () => ({
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_authenticated/impact")({
       {
         name: "description",
         content:
-          "Track kilometres shared, CO₂ avoided and money saved, plus the campus-wide contribution to UN SDG 11.",
+          "Track kilometres shared, car trips avoided and CO₂ avoided, plus the campus-wide contribution to UN SDG 11.",
       },
       { property: "og:title", content: "Sustainability impact — CampusPool @ CVR" },
       {
@@ -36,7 +36,12 @@ export const Route = createFileRoute("/_authenticated/impact")({
   component: ImpactPage,
 });
 
-type Row = { km_shared: number; co2_saved_kg: number; money_saved: number; occurred_at: string };
+type Row = {
+  km_shared: number;
+  co2_saved_kg: number;
+  seats_filled: number;
+  occurred_at: string;
+};
 
 
 function ImpactPage() {
@@ -47,7 +52,7 @@ function ImpactPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("impact_events")
-        .select("km_shared, co2_saved_kg, money_saved, occurred_at, user_id, seats_filled");
+        .select("km_shared, co2_saved_kg, occurred_at, user_id, seats_filled");
       return data ?? [];
     },
   });
@@ -61,9 +66,9 @@ function ImpactPage() {
       (acc, r) => ({
         km: acc.km + Number(r.km_shared),
         co2: acc.co2 + Number(r.co2_saved_kg),
-        money: acc.money + Number(r.money_saved),
+        seats: acc.seats + Number(r.seats_filled ?? 0),
       }),
-      { km: 0, co2: 0, money: 0 },
+      { km: 0, co2: 0, seats: 0 },
     );
 
   const my = sum(mine);
@@ -107,9 +112,9 @@ function ImpactPage() {
           value={`${my.co2.toFixed(1)} kg`}
         />
         <Metric
-          icon={<PiggyBank className="size-4" />}
-          label="Money saved"
-          value={rupees(my.money)}
+          icon={<CarFront className="size-4" />}
+          label="Car trips avoided"
+          value={`${my.seats}`}
         />
       </section>
 
@@ -123,8 +128,8 @@ function ImpactPage() {
         <CardContent className="space-y-4">
           <Progress value={Math.min(100, (all.co2 / target) * 100)} />
           <p className="text-sm text-muted-foreground">
-            {all.co2.toFixed(1)} kg of {target} kg avoided across campus · {seats} seats filled ·{" "}
-            {rupees(all.money)} kept in students' pockets.
+            {all.co2.toFixed(1)} kg of {target} kg avoided across campus · {seats} seats shared ·{" "}
+            {all.km.toFixed(0)} km travelled together.
           </p>
           <div className="grid gap-4 sm:grid-cols-3 sm:pt-2">
             <Metric
@@ -138,9 +143,9 @@ function ImpactPage() {
               value={`${all.co2.toFixed(1)} kg`}
             />
             <Metric
-              icon={<PiggyBank className="size-4" />}
-              label="Campus savings"
-              value={rupees(all.money)}
+              icon={<CarFront className="size-4" />}
+              label="Campus car trips avoided"
+              value={`${seats}`}
             />
           </div>
         </CardContent>

@@ -25,7 +25,7 @@ export type MatchDriver = {
 export type MatchRideDTO = MatchRide & {
   origin_name: string;
   dest_name: string;
-  fare_share: number;
+  
   notes: string | null;
   seats_total: number;
   driver: MatchDriver | null;
@@ -40,7 +40,7 @@ export const matchRides = createServerFn({ method: "POST" })
     const { data: rides, error } = await context.supabase
       .from("rides")
       .select(
-        "id, direction, origin_name, origin_lat, origin_lng, dest_name, dest_lat, dest_lng, departure_time, ride_date, is_recurring, recurrence_days, seats_total, seats_available, fare_share, notes, distance_km, driver:profiles!rides_driver_id_fkey(id, full_name, rating, avatar_url, department, vehicle_model, vehicle_color)",
+        "id, direction, origin_name, origin_lat, origin_lng, dest_name, dest_lat, dest_lng, departure_time, ride_date, is_recurring, recurrence_days, seats_total, seats_available, notes, distance_km, driver:profiles!rides_driver_id_fkey(id, full_name, rating, avatar_url, department, vehicle_model, vehicle_color)",
       )
       .eq("status", "open")
       .limit(200);
@@ -65,7 +65,7 @@ export const matchRides = createServerFn({ method: "POST" })
         recurrence_days: r.recurrence_days ?? [],
         seats_total: r.seats_total,
         seats_available: r.seats_available,
-        fare_share: Number(r.fare_share),
+        
         notes: r.notes,
         distance_km: Number(r.distance_km),
         driver_rating: Number(driver?.rating ?? 4.5),

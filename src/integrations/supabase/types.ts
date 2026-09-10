@@ -50,9 +50,7 @@ export type Database = {
           co2_kg_per_km: number
           demo_mode_enabled: boolean
           endorsement_note: string
-          fuel_price_per_litre: number
           id: boolean
-          km_per_litre: number
           lat: number
           lng: number
           updated_at: string
@@ -65,9 +63,7 @@ export type Database = {
           co2_kg_per_km?: number
           demo_mode_enabled?: boolean
           endorsement_note: string
-          fuel_price_per_litre?: number
           id?: boolean
-          km_per_litre?: number
           lat: number
           lng: number
           updated_at?: string
@@ -80,9 +76,7 @@ export type Database = {
           co2_kg_per_km?: number
           demo_mode_enabled?: boolean
           endorsement_note?: string
-          fuel_price_per_litre?: number
           id?: boolean
-          km_per_litre?: number
           lat?: number
           lng?: number
           updated_at?: string
@@ -95,7 +89,6 @@ export type Database = {
           id: string
           is_demo: boolean
           km_shared: number
-          money_saved: number
           occurred_at: string
           ride_id: string | null
           seats_filled: number
@@ -106,7 +99,6 @@ export type Database = {
           id?: string
           is_demo?: boolean
           km_shared?: number
-          money_saved?: number
           occurred_at?: string
           ride_id?: string | null
           seats_filled?: number
@@ -117,7 +109,6 @@ export type Database = {
           id?: string
           is_demo?: boolean
           km_shared?: number
-          money_saved?: number
           occurred_at?: string
           ride_id?: string | null
           seats_filled?: number
@@ -345,7 +336,6 @@ export type Database = {
           distance_km: number
           driver_id: string
           duration_min: number
-          fare_share: number
           id: string
           is_demo: boolean
           is_recurring: boolean
@@ -370,7 +360,6 @@ export type Database = {
           distance_km?: number
           driver_id: string
           duration_min?: number
-          fare_share?: number
           id?: string
           is_demo?: boolean
           is_recurring?: boolean
@@ -395,7 +384,6 @@ export type Database = {
           distance_km?: number
           driver_id?: string
           duration_min?: number
-          fare_share?: number
           id?: string
           is_demo?: boolean
           is_recurring?: boolean

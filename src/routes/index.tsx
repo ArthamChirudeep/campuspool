@@ -38,7 +38,7 @@ function Home() {
       <main>
         <section className="mx-auto max-w-6xl px-4 py-16 text-center">
           <h1 className="mx-auto max-w-3xl font-display text-4xl font-bold leading-tight sm:text-5xl">
-            Share the drive to {CAMPUS.short}. Save money, cut emissions.
+            Free student lifts to {CAMPUS.short}. Share the ride, cut emissions.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-muted-foreground">
             CampusPool matches {CAMPUS.name} students travelling the same Hyderabad corridors —
@@ -73,7 +73,7 @@ function Home() {
           <Feature
             icon={<Leaf className="size-5" />}
             title="SDG 11 impact"
-            text="Track kilometres shared, CO₂ avoided and rupees saved every week."
+            text="Track kilometres shared, car trips avoided and CO₂ avoided every week."
           />
         </section>
       </main>

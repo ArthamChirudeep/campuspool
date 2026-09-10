@@ -21,7 +21,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { co2ForKm, formatDays, formatTime, moneyForKm, rupees } from "@/lib/campus";
+import { co2ForKm, formatDays, formatTime } from "@/lib/campus";
 
 export const Route = createFileRoute("/_authenticated/rides/$rideId")({
   head: () => ({
@@ -166,10 +166,7 @@ function RideDetail() {
               label="CO₂ avoided"
               value={`${co2ForKm(Number(r.distance_km) * (r.seats_total - 1)).toFixed(1)} kg`}
             />
-            <Stat
-              label="Fuel money saved"
-              value={rupees(moneyForKm(Number(r.distance_km) * (r.seats_total - 1)))}
-            />
+            <Stat label="Car trips avoided" value={`${Math.max(0, r.seats_total - 1)}`} />
           </CardContent>
         </Card>
 
@@ -194,7 +191,7 @@ function RideDetail() {
                 {driver.vehicle_plate ? ` · ${driver.vehicle_plate}` : ""}
               </p>
             )}
-            <p className="pt-2 font-display text-xl font-bold">{rupees(Number(r.fare_share))}</p>
+            <p className="pt-2 font-display text-xl font-bold">Free lift</p>
             <p className="text-muted-foreground">
               {r.seats_available} of {r.seats_total} seats free
             </p>
