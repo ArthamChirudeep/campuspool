@@ -170,7 +170,19 @@ function RideDetail() {
           </CardContent>
         </Card>
 
-        {isParticipant && <RideChat rideId={rideId} />}
+        {isParticipant ? (
+          <RideChat rideId={rideId} driverId={r.driver_id} />
+        ) : (
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-display text-lg">Ride group chat</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground">
+              The group chat opens for everyone travelling in this lift once the driver accepts your
+              seat request.
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       <aside className="space-y-6">
@@ -313,7 +325,18 @@ type ChatMessage = {
   created_at: string;
 };
 
-function RideChat({ rideId }: { rideId: string }) {
+type RideMember = { id: string; full_name: string; isDriver: boolean };
+
+function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase())
+    .join("");
+}
+
+function RideChat({ rideId, driverId }: { rideId: string; driverId: string }) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [text, setText] = useState("");
@@ -330,6 +353,30 @@ function RideChat({ rideId }: { rideId: string }) {
       return data ?? [];
     },
   });
+
+  const members = useQuery({
+    queryKey: ["ride-members", rideId],
+    queryFn: async (): Promise<RideMember[]> => {
+      const [{ data: driver }, { data: riders }] = await Promise.all([
+        supabase.from("profiles").select("id, full_name").eq("id", driverId).maybeSingle(),
+        supabase
+          .from("ride_requests")
+          .select("rider:profiles!ride_requests_rider_id_fkey(id, full_name)")
+          .eq("ride_id", rideId)
+          .eq("status", "accepted"),
+      ]);
+      const list: RideMember[] = [];
+      if (driver) list.push({ id: driver.id, full_name: driver.full_name, isDriver: true });
+      for (const row of riders ?? []) {
+        const p = row.rider as unknown as { id: string; full_name: string } | null;
+        if (p) list.push({ id: p.id, full_name: p.full_name, isDriver: false });
+      }
+      return list;
+    },
+  });
+
+  const nameFor = (id: string) =>
+    members.data?.find((m) => m.id === id)?.full_name ?? "Ride member";
 
   useEffect(() => {
     const channel = supabase
@@ -363,28 +410,62 @@ function RideChat({ rideId }: { rideId: string }) {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="font-display text-lg">Ride chat</CardTitle>
+      <CardHeader className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <CardTitle className="font-display text-lg">Ride group chat</CardTitle>
+          <span className="text-xs text-muted-foreground">
+            {(members.data ?? []).length} member{(members.data ?? []).length === 1 ? "" : "s"}
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {(members.data ?? []).map((m) => (
+            <span
+              key={m.id}
+              className="flex items-center gap-2 rounded-full bg-secondary px-2 py-1 text-xs"
+            >
+              <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
+                {initials(m.full_name)}
+              </span>
+              {m.id === user?.id ? "You" : m.full_name}
+              {m.isDriver && <span className="text-muted-foreground">· driver</span>}
+            </span>
+          ))}
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="max-h-72 space-y-3 overflow-y-auto pr-1">
           {(messages.data ?? []).length === 0 && (
             <p className="text-sm text-muted-foreground">
-              Say hello and agree on the pickup timing.
+              Say hello to everyone in this lift and agree on the pickup timing.
             </p>
           )}
-          {(messages.data ?? []).map((m) => (
-            <div
-              key={m.id}
-              className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
-                m.sender_id === user?.id
-                  ? "ml-auto bg-primary text-primary-foreground"
-                  : "bg-secondary"
-              }`}
-            >
-              {m.body}
-            </div>
-          ))}
+          {(messages.data ?? []).map((m) => {
+            const mine = m.sender_id === user?.id;
+            return (
+              <div key={m.id} className={`max-w-[80%] space-y-1 ${mine ? "ml-auto" : ""}`}>
+                <p
+                  className={`flex items-center gap-2 text-[11px] text-muted-foreground ${
+                    mine ? "justify-end" : ""
+                  }`}
+                >
+                  <span className="font-medium">{mine ? "You" : nameFor(m.sender_id)}</span>
+                  <span>
+                    {new Date(m.created_at).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </p>
+                <div
+                  className={`rounded-2xl px-4 py-2 text-sm ${
+                    mine ? "bg-primary text-primary-foreground" : "bg-secondary"
+                  }`}
+                >
+                  {m.body}
+                </div>
+              </div>
+            );
+          })}
           <div ref={endRef} />
         </div>
         <form
