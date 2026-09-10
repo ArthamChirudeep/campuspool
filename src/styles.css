@@ -163,3 +163,68 @@
     radial-gradient(circle at 12% 18%, color-mix(in oklch, var(--accent) 18%, transparent), transparent 42%),
     radial-gradient(circle at 88% 8%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 46%);
 }
+
+/* Gentle staggered entrance for dashboard sections */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility rise-in {
+  animation: rise-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Slow drifting glow for hero panels */
+@keyframes drift {
+  0%,
+  100% {
+    background-position:
+      0% 0%,
+      100% 0%;
+  }
+  50% {
+    background-position:
+      30% 40%,
+      70% 60%;
+  }
+}
+
+@utility drift-glow {
+  animation: drift 14s ease-in-out infinite;
+}
+
+/* Soft pulsing ring, e.g. around icons */
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@utility soft-pulse {
+  animation: soft-pulse 2.4s ease-in-out infinite;
+}
+
+/* Card hover: lift, deepen shadow, tint the top edge */
+@utility card-interactive {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+  &:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in oklch, var(--primary) 35%, var(--border));
+    box-shadow:
+      0 12px 32px -12px color-mix(in oklch, var(--primary) 22%, transparent),
+      0 2px 8px -2px color-mix(in oklch, var(--foreground) 8%, transparent);
+  }
+}
