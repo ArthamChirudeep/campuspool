@@ -81,19 +81,31 @@ function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <section className="grain-panel rounded-2xl bg-primary px-6 py-8 text-primary-foreground">
+      <section className="grain-panel drift-glow rise-in relative overflow-hidden rounded-2xl bg-primary px-6 py-10 text-primary-foreground shadow-[0_18px_48px_-18px_color-mix(in_oklch,var(--primary)_55%,transparent)]">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-16 -top-20 size-56 rounded-full bg-accent/25 blur-3xl"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-24 -left-10 size-64 rounded-full bg-primary-foreground/10 blur-3xl"
+        />
         <h1 className="font-display text-2xl font-bold sm:text-3xl">Hi {firstName} 👋</h1>
         <p className="mt-2 max-w-xl text-sm text-primary-foreground/80">
           Find a classmate heading your way, or offer your seats on the Ibrahimpatnam–Hyderabad
           corridor.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button asChild variant="secondary">
+          <Button asChild variant="secondary" className="hover-scale">
             <Link to="/find">
               <Search className="mr-2 size-4" /> Find a ride
             </Link>
           </Button>
-          <Button asChild variant="outline" className="bg-transparent text-primary-foreground">
+          <Button
+            asChild
+            variant="outline"
+            className="hover-scale bg-transparent text-primary-foreground"
+          >
             <Link to="/offer">
               <CarFront className="mr-2 size-4" /> Offer a ride
             </Link>
@@ -101,7 +113,7 @@ function Dashboard() {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-3">
+      <section className="rise-in grid gap-4 sm:grid-cols-3" style={{ animationDelay: "90ms" }}>
         <StatCard
           label="Shared distance"
           value={`${(impact.data?.km ?? 0).toFixed(0)} km`}
@@ -119,11 +131,13 @@ function Dashboard() {
         />
       </section>
 
-      <section className="space-y-4">
+      <section className="rise-in space-y-4" style={{ animationDelay: "180ms" }}>
         <div className="flex items-center justify-between">
           <h2 className="font-display text-xl font-semibold">Rides leaving soon</h2>
           <Button asChild variant="ghost" size="sm">
-            <Link to="/find">See all</Link>
+            <Link to="/find" className="story-link">
+              See all
+            </Link>
           </Button>
         </div>
         {rides.isLoading ? (
@@ -133,8 +147,14 @@ function Dashboard() {
           </div>
         ) : rides.data && rides.data.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2">
-            {rides.data.map((ride) => (
-              <RideCard key={ride.id} ride={ride} />
+            {rides.data.map((ride, i) => (
+              <div
+                key={ride.id}
+                className="rise-in card-interactive rounded-xl"
+                style={{ animationDelay: `${220 + i * 70}ms` }}
+              >
+                <RideCard ride={ride} />
+              </div>
             ))}
           </div>
         ) : (
@@ -144,14 +164,17 @@ function Dashboard() {
         )}
       </section>
 
-      <section className="space-y-4">
+      <section className="rise-in space-y-4" style={{ animationDelay: "260ms" }}>
         <h2 className="font-display text-xl font-semibold">Your recent requests</h2>
-        <Card>
+        <Card className="card-interactive">
           <CardContent className="p-0">
             {requests.data && requests.data.length > 0 ? (
               <ul className="divide-y">
                 {requests.data.map((r) => (
-                  <li key={r.id} className="flex items-center justify-between gap-3 px-5 py-4">
+                  <li
+                    key={r.id}
+                    className="flex items-center justify-between gap-3 px-5 py-4 transition-colors hover:bg-muted/50"
+                  >
                     <span className="text-sm">Pickup at {r.pickup_name}</span>
                     <span className="flex items-center gap-3">
                       <span className="text-xs capitalize text-muted-foreground">{r.status}</span>
