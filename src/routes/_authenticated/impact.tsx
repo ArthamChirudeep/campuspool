@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Bus, Leaf, PiggyBank, Users } from "lucide-react";
+import { Bus, CarFront, Leaf, Users } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -15,7 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { rupees } from "@/lib/campus";
+
 
 export const Route = createFileRoute("/_authenticated/impact")({
   head: () => ({
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_authenticated/impact")({
       {
         name: "description",
         content:
-          "Track kilometres shared, CO₂ avoided and money saved, plus the campus-wide contribution to UN SDG 11.",
+          "Track kilometres shared, car trips avoided and CO₂ avoided, plus the campus-wide contribution to UN SDG 11.",
       },
       { property: "og:title", content: "Sustainability impact — CampusPool @ CVR" },
       {
@@ -36,7 +36,12 @@ export const Route = createFileRoute("/_authenticated/impact")({
   component: ImpactPage,
 });
 
-type Row = { km_shared: number; co2_saved_kg: number; money_saved: number; occurred_at: string };
+type Row = {
+  km_shared: number;
+  co2_saved_kg: number;
+  seats_filled: number;
+  occurred_at: string;
+};
 
 
 function ImpactPage() {
