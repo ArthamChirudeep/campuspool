@@ -18,6 +18,7 @@ import { Route as AuthenticatedFindRouteImport } from './routes/_authenticated/f
 import { Route as AuthenticatedImpactRouteImport } from './routes/_authenticated/impact'
 import { Route as AuthenticatedMyRidesRouteImport } from './routes/_authenticated/my-rides'
 import { Route as AuthenticatedOfferRouteImport } from './routes/_authenticated/offer'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedRidesRideIdRouteImport } from './routes/_authenticated/rides.$rideId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -64,6 +65,11 @@ const AuthenticatedOfferRoute = AuthenticatedOfferRouteImport.update({
   path: '/offer',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedRidesRideIdRoute =
   AuthenticatedRidesRideIdRouteImport.update({
     id: '/rides/$rideId',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/impact': typeof AuthenticatedImpactRoute
   '/my-rides': typeof AuthenticatedMyRidesRoute
   '/offer': typeof AuthenticatedOfferRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/rides/$rideId': typeof AuthenticatedRidesRideIdRoute
 }
 export interface FileRoutesByTo {
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/impact': typeof AuthenticatedImpactRoute
   '/my-rides': typeof AuthenticatedMyRidesRoute
   '/offer': typeof AuthenticatedOfferRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/rides/$rideId': typeof AuthenticatedRidesRideIdRoute
 }
 export interface FileRoutesById {
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/_authenticated/impact': typeof AuthenticatedImpactRoute
   '/_authenticated/my-rides': typeof AuthenticatedMyRidesRoute
   '/_authenticated/offer': typeof AuthenticatedOfferRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/rides/$rideId': typeof AuthenticatedRidesRideIdRoute
 }
 export interface FileRouteTypes {
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/impact'
     | '/my-rides'
     | '/offer'
+    | '/profile'
     | '/rides/$rideId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/impact'
     | '/my-rides'
     | '/offer'
+    | '/profile'
     | '/rides/$rideId'
   id:
     | '__root__'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/_authenticated/impact'
     | '/_authenticated/my-rides'
     | '/_authenticated/offer'
+    | '/_authenticated/profile'
     | '/_authenticated/rides/$rideId'
   fileRoutesById: FileRoutesById
 }
@@ -214,6 +226,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOfferRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/rides/$rideId': {
       id: '/_authenticated/rides/$rideId'
       path: '/rides/$rideId'
@@ -231,6 +250,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedImpactRoute: typeof AuthenticatedImpactRoute
   AuthenticatedMyRidesRoute: typeof AuthenticatedMyRidesRoute
   AuthenticatedOfferRoute: typeof AuthenticatedOfferRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedRidesRideIdRoute: typeof AuthenticatedRidesRideIdRoute
 }
 
@@ -241,6 +261,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedImpactRoute: AuthenticatedImpactRoute,
   AuthenticatedMyRidesRoute: AuthenticatedMyRidesRoute,
   AuthenticatedOfferRoute: AuthenticatedOfferRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedRidesRideIdRoute: AuthenticatedRidesRideIdRoute,
 }
 
