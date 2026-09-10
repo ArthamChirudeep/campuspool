@@ -354,6 +354,30 @@ function RideChat({ rideId, driverId }: { rideId: string; driverId: string }) {
     },
   });
 
+  const members = useQuery({
+    queryKey: ["ride-members", rideId],
+    queryFn: async (): Promise<RideMember[]> => {
+      const [{ data: driver }, { data: riders }] = await Promise.all([
+        supabase.from("profiles").select("id, full_name").eq("id", driverId).maybeSingle(),
+        supabase
+          .from("ride_requests")
+          .select("rider:profiles!ride_requests_rider_id_fkey(id, full_name)")
+          .eq("ride_id", rideId)
+          .eq("status", "accepted"),
+      ]);
+      const list: RideMember[] = [];
+      if (driver) list.push({ id: driver.id, full_name: driver.full_name, isDriver: true });
+      for (const row of riders ?? []) {
+        const p = row.rider as unknown as { id: string; full_name: string } | null;
+        if (p) list.push({ id: p.id, full_name: p.full_name, isDriver: false });
+      }
+      return list;
+    },
+  });
+
+  const nameFor = (id: string) =>
+    members.data?.find((m) => m.id === id)?.full_name ?? "Ride member";
+
   useEffect(() => {
     const channel = supabase
       .channel(`ride-chat-${rideId}`)
