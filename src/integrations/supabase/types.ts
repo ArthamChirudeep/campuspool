@@ -14,16 +14,458 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      areas: {
+        Row: {
+          corridor: string | null
+          id: string
+          lat: number
+          lng: number
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          corridor?: string | null
+          id?: string
+          lat: number
+          lng: number
+          name: string
+          sort_order?: number
+        }
+        Update: {
+          corridor?: string | null
+          id?: string
+          lat?: number
+          lng?: number
+          name?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      campus_settings: {
+        Row: {
+          address: string
+          campus_name: string
+          campus_short: string
+          city: string
+          co2_kg_per_km: number
+          demo_mode_enabled: boolean
+          endorsement_note: string
+          fuel_price_per_litre: number
+          id: boolean
+          km_per_litre: number
+          lat: number
+          lng: number
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          campus_name: string
+          campus_short: string
+          city: string
+          co2_kg_per_km?: number
+          demo_mode_enabled?: boolean
+          endorsement_note: string
+          fuel_price_per_litre?: number
+          id?: boolean
+          km_per_litre?: number
+          lat: number
+          lng: number
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          campus_name?: string
+          campus_short?: string
+          city?: string
+          co2_kg_per_km?: number
+          demo_mode_enabled?: boolean
+          endorsement_note?: string
+          fuel_price_per_litre?: number
+          id?: boolean
+          km_per_litre?: number
+          lat?: number
+          lng?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      impact_events: {
+        Row: {
+          co2_saved_kg: number
+          id: string
+          is_demo: boolean
+          km_shared: number
+          money_saved: number
+          occurred_at: string
+          ride_id: string | null
+          seats_filled: number
+          user_id: string
+        }
+        Insert: {
+          co2_saved_kg?: number
+          id?: string
+          is_demo?: boolean
+          km_shared?: number
+          money_saved?: number
+          occurred_at?: string
+          ride_id?: string | null
+          seats_filled?: number
+          user_id: string
+        }
+        Update: {
+          co2_saved_kg?: number
+          id?: string
+          is_demo?: boolean
+          km_shared?: number
+          money_saved?: number
+          occurred_at?: string
+          ride_id?: string | null
+          seats_filled?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_events_ride_id_fkey"
+            columns: ["ride_id"]
+            isOneToOne: false
+            referencedRelation: "rides"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "impact_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_demo: boolean
+          ride_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          is_demo?: boolean
+          ride_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_demo?: boolean
+          ride_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_ride_id_fkey"
+            columns: ["ride_id"]
+            isOneToOne: false
+            referencedRelation: "rides"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          department: string | null
+          full_name: string
+          home_area: string | null
+          id: string
+          is_demo: boolean
+          is_driver: boolean
+          phone: string | null
+          rating: number
+          rides_count: number
+          study_year: number | null
+          vehicle_color: string | null
+          vehicle_model: string | null
+          vehicle_plate: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          department?: string | null
+          full_name?: string
+          home_area?: string | null
+          id: string
+          is_demo?: boolean
+          is_driver?: boolean
+          phone?: string | null
+          rating?: number
+          rides_count?: number
+          study_year?: number | null
+          vehicle_color?: string | null
+          vehicle_model?: string | null
+          vehicle_plate?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          department?: string | null
+          full_name?: string
+          home_area?: string | null
+          id?: string
+          is_demo?: boolean
+          is_driver?: boolean
+          phone?: string | null
+          rating?: number
+          rides_count?: number
+          study_year?: number | null
+          vehicle_color?: string | null
+          vehicle_model?: string | null
+          vehicle_plate?: string | null
+        }
+        Relationships: []
+      }
+      ride_requests: {
+        Row: {
+          created_at: string
+          id: string
+          is_demo: boolean
+          match_score: number
+          message: string | null
+          pickup_lat: number
+          pickup_lng: number
+          pickup_name: string
+          ride_id: string
+          rider_id: string
+          status: Database["public"]["Enums"]["request_status"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_demo?: boolean
+          match_score?: number
+          message?: string | null
+          pickup_lat: number
+          pickup_lng: number
+          pickup_name: string
+          ride_id: string
+          rider_id: string
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_demo?: boolean
+          match_score?: number
+          message?: string | null
+          pickup_lat?: number
+          pickup_lng?: number
+          pickup_name?: string
+          ride_id?: string
+          rider_id?: string
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ride_requests_ride_id_fkey"
+            columns: ["ride_id"]
+            isOneToOne: false
+            referencedRelation: "rides"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ride_requests_rider_id_fkey"
+            columns: ["rider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ride_stops: {
+        Row: {
+          eta_offset_min: number
+          id: string
+          lat: number
+          lng: number
+          name: string
+          ride_id: string
+          seq: number
+        }
+        Insert: {
+          eta_offset_min?: number
+          id?: string
+          lat: number
+          lng: number
+          name: string
+          ride_id: string
+          seq?: number
+        }
+        Update: {
+          eta_offset_min?: number
+          id?: string
+          lat?: number
+          lng?: number
+          name?: string
+          ride_id?: string
+          seq?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ride_stops_ride_id_fkey"
+            columns: ["ride_id"]
+            isOneToOne: false
+            referencedRelation: "rides"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rides: {
+        Row: {
+          created_at: string
+          departure_time: string
+          dest_lat: number
+          dest_lng: number
+          dest_name: string
+          direction: Database["public"]["Enums"]["ride_direction"]
+          distance_km: number
+          driver_id: string
+          duration_min: number
+          fare_share: number
+          id: string
+          is_demo: boolean
+          is_recurring: boolean
+          notes: string | null
+          origin_lat: number
+          origin_lng: number
+          origin_name: string
+          recurrence_days: number[]
+          ride_date: string | null
+          route_polyline: string | null
+          seats_available: number
+          seats_total: number
+          status: Database["public"]["Enums"]["ride_status"]
+        }
+        Insert: {
+          created_at?: string
+          departure_time: string
+          dest_lat: number
+          dest_lng: number
+          dest_name: string
+          direction?: Database["public"]["Enums"]["ride_direction"]
+          distance_km?: number
+          driver_id: string
+          duration_min?: number
+          fare_share?: number
+          id?: string
+          is_demo?: boolean
+          is_recurring?: boolean
+          notes?: string | null
+          origin_lat: number
+          origin_lng: number
+          origin_name: string
+          recurrence_days?: number[]
+          ride_date?: string | null
+          route_polyline?: string | null
+          seats_available?: number
+          seats_total?: number
+          status?: Database["public"]["Enums"]["ride_status"]
+        }
+        Update: {
+          created_at?: string
+          departure_time?: string
+          dest_lat?: number
+          dest_lng?: number
+          dest_name?: string
+          direction?: Database["public"]["Enums"]["ride_direction"]
+          distance_km?: number
+          driver_id?: string
+          duration_min?: number
+          fare_share?: number
+          id?: string
+          is_demo?: boolean
+          is_recurring?: boolean
+          notes?: string | null
+          origin_lat?: number
+          origin_lng?: number
+          origin_name?: string
+          recurrence_days?: number[]
+          ride_date?: string | null
+          route_polyline?: string | null
+          seats_available?: number
+          seats_total?: number
+          status?: Database["public"]["Enums"]["ride_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rides_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      bootstrap_admin: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_ride_participant: {
+        Args: { _ride_id: string; _user_id: string }
+        Returns: boolean
+      }
+      reset_demo_data: { Args: never; Returns: string }
+      seed_demo_data: { Args: never; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "student"
+      request_status: "pending" | "accepted" | "declined" | "cancelled"
+      ride_direction: "to_campus" | "from_campus"
+      ride_status: "open" | "full" | "completed" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +592,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "student"],
+      request_status: ["pending", "accepted", "declined", "cancelled"],
+      ride_direction: ["to_campus", "from_campus"],
+      ride_status: ["open", "full", "completed", "cancelled"],
+    },
   },
 } as const
