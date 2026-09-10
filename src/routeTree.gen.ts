@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFindRouteImport } from './routes/_authenticated/find'
+import { Route as AuthenticatedImpactRouteImport } from './routes/_authenticated/impact'
 import { Route as AuthenticatedMyRidesRouteImport } from './routes/_authenticated/my-rides'
 import { Route as AuthenticatedOfferRouteImport } from './routes/_authenticated/offer'
 import { Route as AuthenticatedRidesRideIdRouteImport } from './routes/_authenticated/rides.$rideId'
@@ -42,6 +43,11 @@ const AuthenticatedFindRoute = AuthenticatedFindRouteImport.update({
   path: '/find',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedImpactRoute = AuthenticatedImpactRouteImport.update({
+  id: '/impact',
+  path: '/impact',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMyRidesRoute = AuthenticatedMyRidesRouteImport.update({
   id: '/my-rides',
   path: '/my-rides',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/find': typeof AuthenticatedFindRoute
+  '/impact': typeof AuthenticatedImpactRoute
   '/my-rides': typeof AuthenticatedMyRidesRoute
   '/offer': typeof AuthenticatedOfferRoute
   '/rides/$rideId': typeof AuthenticatedRidesRideIdRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/find': typeof AuthenticatedFindRoute
+  '/impact': typeof AuthenticatedImpactRoute
   '/my-rides': typeof AuthenticatedMyRidesRoute
   '/offer': typeof AuthenticatedOfferRoute
   '/rides/$rideId': typeof AuthenticatedRidesRideIdRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/find': typeof AuthenticatedFindRoute
+  '/_authenticated/impact': typeof AuthenticatedImpactRoute
   '/_authenticated/my-rides': typeof AuthenticatedMyRidesRoute
   '/_authenticated/offer': typeof AuthenticatedOfferRoute
   '/_authenticated/rides/$rideId': typeof AuthenticatedRidesRideIdRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/find'
+    | '/impact'
     | '/my-rides'
     | '/offer'
     | '/rides/$rideId'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/find'
+    | '/impact'
     | '/my-rides'
     | '/offer'
     | '/rides/$rideId'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/find'
+    | '/_authenticated/impact'
     | '/_authenticated/my-rides'
     | '/_authenticated/offer'
     | '/_authenticated/rides/$rideId'
@@ -162,6 +174,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFindRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/impact': {
+      id: '/_authenticated/impact'
+      path: '/impact'
+      fullPath: '/impact'
+      preLoaderRoute: typeof AuthenticatedImpactRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/my-rides': {
       id: '/_authenticated/my-rides'
       path: '/my-rides'
@@ -189,6 +208,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFindRoute: typeof AuthenticatedFindRoute
+  AuthenticatedImpactRoute: typeof AuthenticatedImpactRoute
   AuthenticatedMyRidesRoute: typeof AuthenticatedMyRidesRoute
   AuthenticatedOfferRoute: typeof AuthenticatedOfferRoute
   AuthenticatedRidesRideIdRoute: typeof AuthenticatedRidesRideIdRoute
@@ -197,6 +217,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFindRoute: AuthenticatedFindRoute,
+  AuthenticatedImpactRoute: AuthenticatedImpactRoute,
   AuthenticatedMyRidesRoute: AuthenticatedMyRidesRoute,
   AuthenticatedOfferRoute: AuthenticatedOfferRoute,
   AuthenticatedRidesRideIdRoute: AuthenticatedRidesRideIdRoute,

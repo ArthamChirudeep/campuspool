@@ -38,7 +38,6 @@ export const Route = createFileRoute("/_authenticated/impact")({
 
 type Row = { km_shared: number; co2_saved_kg: number; money_saved: number; occurred_at: string };
 
-export default function noop() {}
 
 function ImpactPage() {
   const { user } = useAuth();
