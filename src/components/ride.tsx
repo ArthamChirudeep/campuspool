@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDays, formatTime, rupees } from "@/lib/campus";
+import { formatDays, formatTime } from "@/lib/campus";
 
 export type AreaRow = {
   id: string;
@@ -52,7 +52,7 @@ export type RideCardData = {
   ride_date: string | null;
   seats_available: number;
   seats_total: number;
-  fare_share: number;
+  
   distance_km: number;
   driver?: { full_name: string; rating: number; vehicle_model: string | null } | null;
 };
@@ -125,7 +125,7 @@ export function RideCard({
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-4">
           <span className="text-sm">
-            <span className="font-display text-lg font-bold">{rupees(ride.fare_share)}</span>
+            <span className="font-display text-lg font-bold">Free lift</span>
             <span className="text-muted-foreground"> · {ride.distance_km.toFixed(1)} km</span>
           </span>
           {action ?? (

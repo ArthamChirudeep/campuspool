@@ -21,8 +21,6 @@ export const DAYS = [
 ] as const;
 
 export const CO2_KG_PER_KM = 0.171;
-export const FUEL_PRICE = 105;
-export const KM_PER_LITRE = 15;
 
 export type LatLng = { lat: number; lng: number };
 
@@ -81,16 +79,8 @@ export function formatDays(days: number[] | null | undefined): string {
     .join(", ");
 }
 
-export function rupees(value: number): string {
-  return `₹${Math.round(value).toLocaleString("en-IN")}`;
-}
-
 export function co2ForKm(km: number): number {
   return km * CO2_KG_PER_KM;
-}
-
-export function moneyForKm(km: number): number {
-  return (km / KM_PER_LITRE) * FUEL_PRICE;
 }
 
 /** Google encoded-polyline decoder. */

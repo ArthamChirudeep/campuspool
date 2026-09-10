@@ -53,7 +53,7 @@ export function scoreRide(ride: MatchRide, query: MatchQuery): MatchResult | nul
   if (corridorKm > 8) return null;
   const corridorScore = clamp01(1 - corridorKm / 6);
 
-  // 2. Detour cost for the driver.
+  // 2. Extra distance the driver has to travel.
   const direct = haversineKm(origin, dest) || 1;
   const viaPickup = haversineKm(origin, query.pickup) + haversineKm(query.pickup, dest);
   const detourKm = Math.max(0, viaPickup - direct);
