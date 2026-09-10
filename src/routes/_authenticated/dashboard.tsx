@@ -209,15 +209,17 @@ function StatCard({
   icon: React.ReactNode;
 }) {
   return (
-    <Card>
+    <Card className="card-interactive">
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-          {icon}
+        <CardTitle className="flex items-center gap-2.5 text-sm font-medium text-muted-foreground">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            {icon}
+          </span>
           {label}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="font-display text-2xl font-bold">{value}</p>
+        <p className="font-display text-2xl font-bold tabular-nums tracking-tight">{value}</p>
       </CardContent>
     </Card>
   );
