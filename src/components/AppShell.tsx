@@ -143,8 +143,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <footer className="border-t bg-card">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span className="flex items-center gap-2">
-            <Leaf className="size-3.5 text-primary" aria-hidden /> Built for SDG 11 — sustainable
-            campus mobility
+            <Leaf className="size-3.5 text-primary" aria-hidden /> Built By Team - Smart Minds
           </span>
           <span className="flex items-center gap-2">
             <Sparkles className="size-3.5 text-primary" aria-hidden /> {DISCLAIMER}
